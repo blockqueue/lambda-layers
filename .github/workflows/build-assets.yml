@@ -38,8 +38,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
         run: |
-          gh release create v0.0.0 "${{ inputs.archiveName }}.zip"
-        shell: bash
+          echo ${{ github.ref }}
+          # gh release create v0.0.0 "${{ inputs.archiveName }}.zip"
+          gh release upload ${{ github.ref }} "${{ inputs.archiveName }}.zip"
 
       # - name: Publish Assest
       #   run: |
