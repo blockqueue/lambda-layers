@@ -28,7 +28,6 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: changes
         with:
-          base: main # https://github.com/dorny/paths-filter#usage
           filters: |
             libsql:
             - 'libsql/package.json'
