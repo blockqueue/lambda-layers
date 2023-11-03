@@ -38,7 +38,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: changes
         with:
-          base: ${{ steps.last-release.outputs.tag }}
+          base: '${{ steps.last-release.outputs.tag }}'
           filters: |
             libsql:
             - 'libsql/package.json'
