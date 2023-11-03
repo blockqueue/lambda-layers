@@ -31,16 +31,14 @@ jobs:
         run: |
           tag=`gh release list | sed -n '2 p' | awk '{print $(NF -1);}'`
           echo "Tag: $tag"
-          sha=`git show-ref --tags | grep $tag | awk '{print $1;}'`
-          echo "SHA: $sha"
-          echo "{sha}={$sha}" >> $GITHUB_OUTPUT
+          echo "{tag}={$tag}" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
 
       - uses: dorny/paths-filter@v2
         id: changes
         with:
-          base: ${{ steps.last-release.outputs.sha }}
+          base: ${{ steps.last-release.outputs.tag }}
           filters: |
             libsql:
             - 'libsql/package.json'
