@@ -30,15 +30,7 @@ jobs:
         id: last-release
         run: |
           tag=`gh release list | sed -n '2 p' | awk '{print $(NF -1);}'`
-          echo "Tag: $tag"
           echo "tag=$tag" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ github.TOKEN }}
-
-      - name: View Output
-        run: |
-          echo "${{ steps.last-release.outputs.tag }}"
-          echo ${{ steps.last-release.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
 
