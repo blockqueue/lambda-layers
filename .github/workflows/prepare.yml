@@ -4,11 +4,6 @@ on:
   release:
     types: [published]
 
-# on:
-#   push:
-#     branches:
-#       - main
-
 concurrency:
   group: merge-${{ github.ref }}
 
@@ -25,9 +20,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Getting sha for last release
+        id: last-release
+        run: |
+          tag=`gh release list | sed -n '2 p' | awk '{print $(NF -1);}'`
+          echo "Tag: $tag"
+          sha=`git show-ref --tags | grep $tag | awk '{print $1;}'`
+          echo "SHA: $sha"
+          echo "::set-output name=sha::$sha"
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
+
       - uses: dorny/paths-filter@v2
         id: changes
         with:
+          base: ${{ steps.last-release.outputs.sha }}
           filters: |
             libsql:
             - 'libsql/package.json'
