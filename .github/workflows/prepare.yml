@@ -1,0 +1,58 @@
+name: Build & Publish Layers
+
+# on:
+#   release:
+#     types: [published]
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: merge-${{ github.ref }}
+
+jobs:
+  pre:
+    name: Check for Changes
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+      contents: read
+    outputs:
+      libsql: ${{ steps.changes.outputs.libsql }}
+      imgly: ${{ steps.changes.outputs.imgly }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          base: main # https://github.com/dorny/paths-filter#usage
+          filters: |
+            libsql:
+            - 'libsql/package.json'
+            imgly:
+            - 'imgly/package.json'
+
+  libsql:
+    name: libsql
+    needs:
+      - pre
+    if: ${{ needs.pre.outputs.libsql == 'true' }}
+    uses: ./.github/workflows/build-assets.yml
+    with:
+      libName: '@libsql/client'
+      version: 0.3.6
+      archiveName: libsql
+
+  imgly:
+    name: imgly
+    needs:
+      - pre
+    if: ${{ needs.pre.outputs.imgly == 'true' }}
+    uses: ./.github/workflows/build-assets.yml
+    with:
+      libName: '@imgly/background-removal'
+      version: 1.1.5
+      archiveName: imgly

@@ -1,0 +1,40 @@
+on:
+  workflow_call:
+    inputs:
+      libName:
+        description: The name of the library to install
+        type: string
+        required: true
+      version:
+        description: The version of the installed library
+        type: string
+        required: true
+      archiveName:
+        description: The name of the final archive
+        type: string
+        required: true
+
+jobs:
+  BuildAndDeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Install Dependency
+        run: npm install "${{ inputs.libName }}"@"${{ inputs.version }}"
+
+      - name: Zip Asset
+        run: |
+          mkdir nodejs
+          str_array=($(echo ${{ inputs.libName }} | tr "/" "\n"))
+          echo str_array
+          initial=str_array[0]
+          cp -r "node_modules/${initial}" nodejs/${initial}
+          zip -r "${archiveName}.zip" nodejs
+          ls -a
+
+      # - name: Publish Assest
+      #   run: |
+      #     cp ./docker-compose.prod.yml ./.github/ansible/roles/deploy/files/
+      #     cp ./${{ inputs.serviceName }}.tar ./.github/ansible/roles/deploy/files/
