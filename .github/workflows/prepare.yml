@@ -35,6 +35,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
 
+      - name: View Output
+        run: |
+          echo "${{ steps.last-release.outputs.tag }}"
+          echo ${{ steps.last-release.outputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
+
       - uses: dorny/paths-filter@v2
         id: changes
         with:
