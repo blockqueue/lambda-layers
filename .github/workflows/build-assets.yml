@@ -28,21 +28,13 @@ jobs:
         run: |
           mkdir nodejs
           str_array=($(echo ${{ inputs.libName }} | tr "/" "\n"))
-          echo $str_array
           initial=${str_array[0]}
           cp -r "node_modules/${initial}" nodejs/${initial}
           zip -r "${{ inputs.archiveName }}.zip" nodejs
-          ls -a
 
       - name: Publish Assest
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
         run: |
           echo ${{ github.ref }}
-          # gh release create v0.0.0 "${{ inputs.archiveName }}.zip"
-          gh release upload ${{ github.ref }} "${{ inputs.archiveName }}.zip"
-
-      # - name: Publish Assest
-      #   run: |
-      #     cp ./docker-compose.prod.yml ./.github/ansible/roles/deploy/files/
-      #     cp ./${{ inputs.serviceName }}.tar ./.github/ansible/roles/deploy/files/
+          gh release upload ${{ github.ref_name }} "${{ inputs.archiveName }}.zip"
