@@ -15,7 +15,7 @@ on:
         required: true
 
 jobs:
-  BuildAndDeploy:
+  BuildAndPublishAssets:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -32,9 +32,8 @@ jobs:
           cp -r "node_modules/${initial}" nodejs/${initial}
           zip -r "${{ inputs.archiveName }}.zip" nodejs
 
-      - name: Publish Assest
+      - name: Publish Assest to ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
         run: |
-          echo ${{ github.ref }}
           gh release upload ${{ github.ref_name }} "${{ inputs.archiveName }}.zip"

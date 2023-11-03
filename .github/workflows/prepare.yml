@@ -4,11 +4,6 @@ on:
   release:
     types: [published]
 
-# on:
-#   push:
-#     branches:
-#       - main
-
 concurrency:
   group: merge-${{ github.ref }}
 
