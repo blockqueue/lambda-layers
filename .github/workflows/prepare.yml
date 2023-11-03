@@ -31,7 +31,6 @@ jobs:
           echo "Tag: $tag"
           sha=`git show-ref --tags | grep $tag | awk '{print $1;}'`
           echo "SHA: $sha"
-          echo "::set-output name=sha::$sha"
           echo "{sha}={$sha}" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
