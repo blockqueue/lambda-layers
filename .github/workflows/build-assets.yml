@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Dependency
-        run: npm install "${{ inputs.libName }}"@"${{ inputs.version }}"
+        run: npm install "${{ inputs.libName }}@${{ inputs.version }}"
 
       - name: Zip Asset
         run: |
