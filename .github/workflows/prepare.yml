@@ -31,7 +31,7 @@ jobs:
         run: |
           tag=`gh release list | sed -n '2 p' | awk '{print $(NF -1);}'`
           echo "Tag: $tag"
-          echo "{tag}={$tag}" >> $GITHUB_OUTPUT
+          echo "tag=$tag" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
 
