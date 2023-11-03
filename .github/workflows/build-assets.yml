@@ -28,10 +28,10 @@ jobs:
         run: |
           mkdir nodejs
           str_array=($(echo ${{ inputs.libName }} | tr "/" "\n"))
-          echo str_array
-          initial=str_array[0]
+          echo $str_array
+          initial=${str_array[0]}
           cp -r "node_modules/${initial}" nodejs/${initial}
-          zip -r "${archiveName}.zip" nodejs
+          zip -r " ${{ inputs.archiveName }}.zip" nodejs
           ls -a
 
       # - name: Publish Assest
