@@ -31,8 +31,15 @@ jobs:
           echo $str_array
           initial=${str_array[0]}
           cp -r "node_modules/${initial}" nodejs/${initial}
-          zip -r " ${{ inputs.archiveName }}.zip" nodejs
+          zip -r "${{ inputs.archiveName }}.zip" nodejs
           ls -a
+
+      - name: Publish Assest
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
+        run: |
+          gh release create v0.0.0 "${{ inputs.archiveName }}.zip"
+        shell: bash
 
       # - name: Publish Assest
       #   run: |
