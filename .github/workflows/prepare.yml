@@ -1,8 +1,13 @@
 name: Build & Publish Layers
 
+# on:
+#   release:
+#     types: [published]
+
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 concurrency:
   group: merge-${{ github.ref }}
