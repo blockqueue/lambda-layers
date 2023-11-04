@@ -4,11 +4,6 @@ on:
   release:
     types: [published]
 
-# on:
-#   push:
-#     branches:
-#       - main
-
 concurrency:
   group: merge-${{ github.ref }}
 
@@ -21,6 +16,7 @@ jobs:
       contents: read
     outputs:
       libsql: ${{ steps.changes.outputs.libsql }}
+      imgly: ${{ steps.changes.outputs.imgly }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -40,6 +36,8 @@ jobs:
           filters: |
             libsql:
             - 'libsql/package.json'
+            imgly:
+              - 'imgly/package.json'
 
   libsql:
     name: libsql
@@ -49,3 +47,13 @@ jobs:
     uses: ./.github/workflows/build-assets.yml
     with:
       archiveName: libsql
+
+  imgly:
+    name: imgly
+    needs:
+      - pre
+    if: ${{ needs.pre.outputs.imgly == 'true' }}
+    uses: ./.github/workflows/build-assets.yml
+    with:
+      archiveName: imgly
+      dependencies: onnxruntime-node,onnxruntime-common
