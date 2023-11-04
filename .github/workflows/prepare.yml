@@ -57,6 +57,6 @@ jobs:
     if: ${{ needs.pre.outputs.imgly == 'true' }}
     uses: ./.github/workflows/build-assets.yml
     with:
-      libName: '@imgly/background-removal'
+      libName: '@imgly/background-removal-node'
       version: 1.1.5
       archiveName: imgly
