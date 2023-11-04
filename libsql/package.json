@@ -1,5 +1,5 @@
 {
-  "name": "libsql",
+  "name": "@libsql/client",
   "version": "0.3.6",
   "description": ""
 }

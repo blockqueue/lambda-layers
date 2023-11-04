@@ -1,14 +1,6 @@
 on:
   workflow_call:
     inputs:
-      libName:
-        description: The name of the library to install
-        type: string
-        required: true
-      version:
-        description: The version of the installed library
-        type: string
-        required: true
       archiveName:
         description: The name of the final archive
         type: string
@@ -24,18 +16,27 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
+      - name: Parse ${{ inputs.archiveName }}'s package.json
+        id: package_json
+        run: |
+          version= cd ${{ inputs.archiveName }} && cat package.json | jq -r '.version'
+          libName= cd ${{ inputs.archiveName }} && cat package.json | jq -r '.name'
+          echo "libName=$libName" >> $GITHUB_OUTPUT
+          echo "version=$version" >> $GITHUB_OUTPUT
+
       - name: Install Dependency
-        run: npm install "${{ inputs.libName }}@${{ inputs.version }}"
+        run: |
+          npm install "${{ steps.package_json.outputs.libName }}@${{ steps.package_json.outputs.version }}"
 
       - name: Zip Asset
         run: |
           mkdir nodejs
-          str_array=($(echo ${{ inputs.libName }} | tr "/" "\n"))
+          str_array=($(echo ${{ steps.package_json.outputs.libName }} | tr "/" "\n"))
           initial=${str_array[0]}
           cp -r "node_modules/${initial}" nodejs/${initial}
 
-          if [ -n "$dependencies" ]; then
-            for dependency in $(echo $dependencies | tr "," "\n"); do
+          if [ -n "${{ inputs.dependencies }}" ]; then
+            for dependency in $(echo ${{ inputs.dependencies }} | tr "," "\n"); do
               cp -r "node_modules/${dependency}" nodejs/${dependency}
             done
           fi
