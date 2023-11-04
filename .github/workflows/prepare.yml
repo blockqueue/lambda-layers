@@ -1,13 +1,13 @@
 name: Build & Publish Layers
 
-# on:
-#   release:
-#     types: [published]
-
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
+
+# on:
+#   push:
+#     branches:
+#       - main
 
 concurrency:
   group: merge-${{ github.ref }}
@@ -57,7 +57,7 @@ jobs:
     name: imgly
     needs:
       - pre
-    # if: ${{ needs.pre.outputs.imgly == 'true' }}
+    if: ${{ needs.pre.outputs.imgly == 'true' }}
     uses: ./.github/workflows/build-assets.yml
     with:
       archiveName: imgly
