@@ -1,5 +1,4 @@
 {
   "name": "@libsql/client",
-  "version": "0.3.6",
-  "description": "For working with Turso DB"
+  "version": "0.3.6"
 }
