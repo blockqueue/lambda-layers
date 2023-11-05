@@ -32,7 +32,7 @@ jobs:
 
       - name: Zip Asset
         run: |
-          mkdir nodejs
+          mkdir -p nodejs/node_modules
           str_array=($(echo ${{ steps.package_json.outputs.libName }} | tr "/" "\n"))
           initial=${str_array[0]}
           cp -r "node_modules/${initial}" nodejs/node_modules/${initial}
