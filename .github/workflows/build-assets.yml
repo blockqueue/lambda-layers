@@ -39,7 +39,7 @@ jobs:
 
           if [ -n "${{ inputs.dependencies }}" ]; then
             for dependency in $(echo ${{ inputs.dependencies }} | tr "," "\n"); do
-              cp -r "node_modules/${dependency}" nodejs/${dependency}
+              cp -r "node_modules/${dependency}" nodejs/node_modules/${dependency}
             done
           fi
 
