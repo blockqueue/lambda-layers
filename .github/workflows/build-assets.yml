@@ -35,7 +35,7 @@ jobs:
           mkdir nodejs
           str_array=($(echo ${{ steps.package_json.outputs.libName }} | tr "/" "\n"))
           initial=${str_array[0]}
-          cp -r "node_modules/${initial}" nodejs/${initial}
+          cp -r "node_modules/${initial}" nodejs/node_modules/${initial}
 
           if [ -n "${{ inputs.dependencies }}" ]; then
             for dependency in $(echo ${{ inputs.dependencies }} | tr "," "\n"); do
