@@ -39,8 +39,8 @@ jobs:
             - 'libsql/package.json'
             imgly:
               - 'imgly/package.json'
-              onnxruntime:
-              - 'onnxruntime/package.json'
+            onnxruntime:
+            - 'onnxruntime/package.json'
 
   libsql:
     name: libsql
