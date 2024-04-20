@@ -17,6 +17,7 @@ jobs:
     outputs:
       libsql: ${{ steps.changes.outputs.libsql }}
       imgly: ${{ steps.changes.outputs.imgly }}
+      onnxruntime: ${{ steps.changes.outputs.onnxruntime }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -38,6 +39,8 @@ jobs:
             - 'libsql/package.json'
             imgly:
               - 'imgly/package.json'
+              onnxruntime:
+              - 'onnxruntime/package.json'
 
   libsql:
     name: libsql
@@ -57,3 +60,13 @@ jobs:
     with:
       archiveName: imgly
       dependencies: onnxruntime-node,onnxruntime-common
+
+  onnxruntime:
+    name: onnxruntime
+    needs:
+      - pre
+    if: ${{ needs.pre.outputs.onnxruntime == 'true' }}
+    uses: ./.github/workflows/build-assets.yml
+    with:
+      archiveName: onnxruntime
+      removePaths: onnxruntime-node/bin/napi-v3/darwin,onnxruntime-node/bin/napi-v3/win32,onnxruntime-node/bin/napi-v3/linux/arm64,onnxruntime-node/bin/napi-v3/linux/x64/libonnxruntime_providers_cuda.so,onnxruntime-node/bin/napi-v3/linux/x64/libonnxruntime_providers_shared.so,onnxruntime-node/bin/napi-v3/linux/x64/libonnxruntime_providers_tensorrt.so

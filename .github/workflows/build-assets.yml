@@ -6,8 +6,11 @@ on:
         type: string
         required: true
       dependencies:
-        description: The name of the final archive
-        type: string # a,b,c
+        description: Dependencies to copy into the final nodejs module
+        type: string
+      removePaths:
+        description: Paths to delete, could be folders or files
+        type: string
 
 jobs:
   BuildAndPublishAssets:
@@ -33,6 +36,8 @@ jobs:
       - name: Zip Asset
         run: |
           mkdir -p nodejs/node_modules
+
+          # copy packages
           str_array=($(echo ${{ steps.package_json.outputs.libName }} | tr "/" "\n"))
           initial=${str_array[0]}
           cp -r "node_modules/${initial}" nodejs/node_modules/${initial}
@@ -43,6 +48,14 @@ jobs:
             done
           fi
 
+          # remove packages
+          if [ -n "${{ inputs.removePaths }}" ]; then
+            for removePath in $(echo ${{ inputs.removePaths }} | tr "," "\n"); do
+              rm -rf nodejs/node_modules/${removePath}
+            done
+          fi
+
+          # zip archive
           zip -r "${{ inputs.archiveName }}.zip" nodejs
 
       - name: Publish Assest to ${{ github.ref_name }}
